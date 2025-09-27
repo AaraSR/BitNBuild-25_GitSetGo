@@ -2,9 +2,9 @@
 
 
 ## Team Details:
-1. Sanskar Indulkar -
-2. Parth Nagare -
-3. Aaradhya Raut -
+1. Sanskar Indulkar
+2. Parth Nagare
+3. Aaradhya Raut
 
 
 ## Project Abstract:
@@ -16,3 +16,4 @@ Presentation Link:
 ## Domain and Tools used:
 
 Programming Language: Python
+
