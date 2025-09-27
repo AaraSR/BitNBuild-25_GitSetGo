@@ -1,81 +1,97 @@
 import streamlit as st
 import json
-import matplotlib.pyplot as plt
-from wordcloud import WordCloud
 from scraper import scrape_reviews_from_url
 from nlp_utils import analyze_reviews
+import altair as alt
+import pandas as pd
 
-st.set_page_config(page_title="Review Radar", layout="wide")
-st.title("🔎 Review Radar — Product Review Analyzer")
+# --- Page Config ---
+st.set_page_config(page_title="ReviewRadar", page_icon="📡")
 
-# Inputs
-col1, col2 = st.columns(2)
-url1 = col1.text_input("Product URL 1")
-url2 = col2.text_input("Product URL 2 (optional)")
-uploaded = st.file_uploader("Upload Reviews JSON", type=["json"])
-max_reviews = st.slider("Max reviews to analyze", 10, 200, 50)
+# --- Sidebar ---
+with st.sidebar:
+    st.header("About ReviewRadar")
+    st.write("""
+        ReviewRadar uses NLP to analyze product reviews from e-commerce sites. 
+        Get quick insights without the manual effort!
+    """)
+    st.header("Instructions")
+    st.write("""
+        1.  Paste an Amazon or Flipkart product URL.
+        2.  Click 'Analyze'.
+        3.  View the sentiment breakdown and top keywords.
+    """)
 
-if st.button("Analyze"):
-    reviews1, reviews2 = [], []
+# --- Main App ---
+st.title("📡 ReviewRadar")
+st.subheader("Your go-to for quick and insightful product review analysis.")
 
-    if uploaded:
-        reviews1 = json.load(uploaded)
-    elif url1:
-        st.info("🔄 Scraping product 1...")
-        reviews1 = scrape_reviews_from_url(url1, max_reviews)
-        if url2:
-            st.info("🔄 Scraping product 2...")
-            reviews2 = scrape_reviews_from_url(url2, max_reviews)
-    else:
-        with open("sample_reviews.json") as f:
-            reviews1 = json.load(f)
+# --- URL Input ---
+url = st.text_input("Enter Product URL (Amazon or Flipkart)", "")
 
-    if not reviews1:
-        st.error("No reviews found.")
-        st.stop()
+if 'analysis_results' not in st.session_state:
+    st.session_state.analysis_results = None
 
-    # Analyze
-    result1 = analyze_reviews(reviews1)
-    result2 = analyze_reviews(reviews2) if reviews2 else None
+col1, col2 = st.columns([1, 1])
 
-    # --- Product 1 ---
-    st.header(" Product 1 Insights")
-    st.metric("Total Reviews", result1["total"])
-    st.metric("Positive", result1["positive"])
-    st.metric("Negative", result1["negative"])
-    st.metric("Neutral", result1["neutral"])
-    st.subheader("Summary")
-    st.write(result1["summary"])
+with col1:
+    if st.button("Analyze Reviews"):
+        if url:
+            try:
+                with st.spinner("Scraping and analyzing reviews... This may take a moment."):
+                    reviews = scrape_reviews_from_url(url)
+                    if reviews:
+                        st.session_state.analysis_results = analyze_reviews(reviews)
+                    else:
+                        st.warning("Could not scrape any reviews. Check the URL or try another product.")
+            except Exception as e:
+                st.error(f"An error occurred: {e}")
+        else:
+            st.warning("Please enter a URL.")
 
-    # Pie chart
-    fig, ax = plt.subplots()
-    ax.pie([result1["positive"], result1["negative"], result1["neutral"]],
-           labels=["Positive", "Negative", "Neutral"],
-           autopct="%1.1f%%", colors=["green","red","gray"])
-    st.pyplot(fig)
+with col2:
+    if st.button("Load Sample Data"):
+        with open("sample_reviews.json", "r") as f:
+            reviews = json.load(f)
+        st.session_state.analysis_results = analyze_reviews(reviews)
 
-    # Word Cloud
-    st.subheader("Word Cloud of Keywords")
-    wc = WordCloud(width=800, height=400, background_color="white").generate(" ".join(result1["keywords"]))
-    st.image(wc.to_array())
 
-    # --- Product 2 (if provided) ---
-    if result2:
-        st.header(" Product 2 Insights")
-        st.metric("Total Reviews", result2["total"])
-        st.metric("Positive", result2["positive"])
-        st.metric("Negative", result2["negative"])
-        st.metric("Neutral", result2["neutral"])
-        st.subheader("Summary")
-        st.write(result2["summary"])
+# --- Display Results ---
+if st.session_state.analysis_results:
+    results = st.session_state.analysis_results
+    
+    st.header("Analysis Dashboard")
 
-        # Comparison chart
-        st.subheader(" Comparison")
-        fig2, ax2 = plt.subplots()
-        labels = ["Positive", "Negative", "Neutral"]
-        ax2.bar(labels, [result1["positive"], result1["negative"], result1["neutral"]],
-                alpha=0.7, label="Product 1", color='blue')
-        ax2.bar(labels, [result2["positive"], result2["negative"], result2["neutral"]],
-                alpha=0.7, label="Product 2", color='orange')
-        ax2.legend()
-        st.pyplot(fig2)
+    # --- Metrics ---
+    col1, col2, col3, col4 = st.columns(4)
+    col1.metric("Total Reviews", results["total"])
+    col2.metric("Positive", f"{results['positive']} ({results['positive']/results['total']:.1%})")
+    col3.metric("Negative", f"{results['negative']} ({results['negative']/results['total']:.1%})")
+    col4.metric("Neutral", f"{results['neutral']} ({results['neutral']/results['total']:.1%})")
+
+    # --- Charts ---
+    chart_data = pd.DataFrame({
+        'Sentiment': ['Positive', 'Negative', 'Neutral'],
+        'Count': [results['positive'], results['negative'], results['neutral']]
+    })
+    
+    c = alt.Chart(chart_data).mark_bar().encode(
+        x=alt.X('Sentiment', sort=None),
+        y='Count',
+        color='Sentiment'
+    ).properties(
+        title="Sentiment Distribution"
+    )
+    
+    st.altair_chart(c, use_container_width=True)
+
+    # --- Keywords & Summary ---
+    st.subheader("Summary & Top Keywords")
+    st.info(results["summary"])
+    
+    st.subheader("Top Keywords")
+    st.write(results["keywords"])
+
+    # --- Raw Reviews ---
+    with st.expander("View Analyzed Reviews"):
+        st.dataframe(pd.DataFrame(results["reviews"]))
