@@ -40,3 +40,13 @@
 *   **Browser Extension:** Analyze reviews directly on the product page.
 *   **Multilingual Support:** Analyze reviews in multiple languages.
 *   **Aspect-Based Sentiment:** Pinpoint sentiment on specific features (e.g., "battery life is great," "screen is dim").
+
+## 🔹 Presentation on Project Summary
+
+* Canva Link: [Review Radar](https://www.canva.com/design/DAG0Pc1HEyg/tmEJ5wCr0TPe8lY8r_6tVg/view?utm_content=DAG0Pc1HEyg&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h5282bdacea)
+
+## 🔹 Team Members:
+
+1. Sanskar Indulkar (Team Leader)
+2. Parth Nagare
+3. Aaradhya Raut
