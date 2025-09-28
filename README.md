@@ -45,6 +45,23 @@
 
 * Canva Link: [Review Radar](https://www.canva.com/design/DAG0Pc1HEyg/tmEJ5wCr0TPe8lY8r_6tVg/view?utm_content=DAG0Pc1HEyg&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h5282bdacea)
 
+## 🔹 Tools and Libraries used
+
+1.  *requests*
+2.  *beautifulsoup4* (imported as BeautifulSoup)
+3.  *transformers*
+4.  *torch*
+5.  *scikit-learn* (imported components like TfidfVectorizer are from sklearn)
+6.  *streamlit* (imported as st)
+7.  *altair* (imported as alt)
+8.  *pandas* (imported as pd)
+9.  *numpy* (imported as np)
+10. *json*
+11. *time*
+12. *random*
+13. *re*
+14. *logging*
+
 ## 🔹 Team Members:
 
 1. Sanskar Indulkar (Team Leader)
