@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "ReviewRadar - Open Streamlit",
+  "version": "1.0",
+  "description": "Open ReviewRadar Streamlit app from toolbar",
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Open ReviewRadar"
+  },
+  "permissions": ["tabs", "storage"],
+  "host_permissions": ["http://localhost:8501/*", "http://192.168.34.125:8501/*"]
+}

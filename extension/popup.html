@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>ReviewRadar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        font-family: 'Poppins', sans-serif;  /* cool modern font */
+        min-width: 380px;
+        min-height: 260px;
+        overflow-y: auto;
+        overflow-x: hidden;
+      }
+      .container {
+        height: 100%;
+        padding: 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        color: #fff;
+        box-sizing: border-box;
+      }
+      h2 {
+        margin: 0;
+        font-weight: 600;
+        font-size: 18px;
+        text-align: center;
+      }
+      label { font-size: 13px; opacity: 0.95; }
+      input {
+        padding: 10px;
+        border-radius: 8px;
+        border: none;
+        width: 100%;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+        font-size: 14px;
+      }
+      .row {
+        display: flex;
+        gap: 8px;
+        margin-top: 6px;
+      }
+      button {
+        flex: 1;
+        padding: 10px 12px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        font-family: 'Poppins', sans-serif;
+      }
+      .primary { background: rgba(255,255,255,0.15); color: #fff; }
+      .secondary { background: rgba(255,255,255,0.08); color: #fff; }
+      small { opacity: 0.9; display: block; margin-top: 6px; font-size: 11px; color: #eee; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>🚀 ReviewRadar</h2>
+
+      <div>
+        <label for="local-url">Local URL</label>
+        <input id="local-url" value="http://localhost:8501/" readonly />
+        <small>Runs on this machine</small>
+      </div>
+
+      <div>
+        <label for="network-url">Network URL</label>
+        <input id="network-url" placeholder="http://192.168.x.x:8501/" />
+        <small>Press Enter or use buttons below</small>
+      </div>
+
+      <div class="row">
+        <button id="open-local" class="primary">Open Local</button>
+        <button id="open-network" class="primary">Open Network</button>
+      </div>
+
+      <div class="row">
+        <button id="save" class="secondary">Save Network</button>
+        <button id="test" class="secondary">Test Network</button>
+      </div>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
