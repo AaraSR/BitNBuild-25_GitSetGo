@@ -33,7 +33,8 @@
 
 ## 🔹 Screenshots
 
-*(Coming Soon!)*
+![main_page](images/main_page.jpg)
+![review_page](images/reviews.jpg)
 
 ## 🔹 Future Enhancements
 
