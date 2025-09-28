@@ -16,7 +16,7 @@
 
 1.  Clone the repository:
     ```bash
-    git clone https://github.com/your-username/review-radar.git
+    git clone https://github.com/your-username/BitNBuild-25_GitSetGo.git
     ```
 2.  Install dependencies:
     ```bash
